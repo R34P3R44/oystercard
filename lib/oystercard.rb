@@ -8,6 +8,7 @@ class Oystercard
 
   def initialize
     @balance = 0
+    @entry_station = false
   end
 
   def top_up(money)
@@ -24,10 +25,9 @@ class Oystercard
   end
 
   def touch_in(station)
-    @entry_station = station
+    !!@entry_station = station
   end
 
-  def updated_station(station)
-    @entry_station = station
+  def touch_out
   end
 end

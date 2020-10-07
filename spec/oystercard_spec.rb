@@ -36,9 +36,8 @@ describe Oystercard do
 
   describe '#touch_in' do
     it 'lets customer enter' do
-      subject.top_up(41)
-      subject.touch_in(:station)
-      expect{subject.touch_in(:station)}.to change {subject.in_journey?}.to eq (true)
+      #subject.top_up(10)
+      expect{ subject.touch_in(:station) }.to change { subject.in_journey? }.to(true)
     end
   end
 end
