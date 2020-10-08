@@ -4,6 +4,7 @@ class Oystercard
 
   attr_reader :balance, :entry_station
 
+  MINIMUM = 1
   LIMIT = 90
 
   def initialize
@@ -25,9 +26,10 @@ class Oystercard
   end
 
   def touch_in(station)
-    !!@entry_station = station
+    @entry_station = station
   end
 
   def touch_out
+    @entry_station = false
   end
 end
