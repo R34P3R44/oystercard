@@ -18,15 +18,17 @@ describe Oystercard do
     expect{subject.top_up(91)}.to raise_error "Error, top up limit is #{Oystercard::LIMIT}"
   end
 
-  it 'deducts the fare from balance' do
-    expect(subject).to respond_to(:deduct).with(1).argument
-  end
+  ## Removed these tests to be able to make deduct a private method.
+  #
+  # it 'deducts the fare from balance' do
+  #   expect(subject).to respond_to(:deduct).with(1).argument
+  # end
 
-  it 'deducts the fare from balance' do
-    subject.top_up(41)
-    subject.deduct(11)
-    expect(subject.balance).to eq 30
-  end
+  # it 'deducts the fare from balance' do
+  #   subject.top_up(41)
+  #   #subject.deduct(11)
+  #   expect(subject.balance).to eq 30
+  # end
 
   describe '#in_journey' do
     it 'initially not in journey' do
@@ -65,6 +67,12 @@ describe Oystercard do
       subject.top_up(3)
       subject.touch_in(:station)
       expect{ subject.touch_out }.to change { subject.in_journey? }.to(false)
+    end
+
+    it 'deducts the correct fare' do
+      subject.top_up(4)
+      subject.touch_in(:station)
+      expect{ subject.touch_out }.to change { subject.balance }.by(-Oystercard::MINIMUM)
     end
   end
 end
