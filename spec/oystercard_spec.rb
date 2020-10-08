@@ -19,7 +19,6 @@ describe Oystercard do
   end
 
   ## Removed these tests to be able to make deduct a private method.
-  #
   # it 'deducts the fare from balance' do
   #   expect(subject).to respond_to(:deduct).with(1).argument
   # end
@@ -47,7 +46,7 @@ describe Oystercard do
       subject.top_up(4)
       subject.touch_in(:station)
       subject.touch_out
-      expect(subject.entry_station).to eq false
+      expect(subject.entry_station).to eq nil
     end
   end
 
