@@ -13,7 +13,7 @@ class Oystercard
   end
 
   def top_up(money)
-    raise "Error, top up limit is #{LIMIT}" if @balance + money > 90
+    raise "Error, top up limit is #{LIMIT}" if @balance + money > LIMIT
     @balance = @balance + money
   end
 
@@ -26,10 +26,13 @@ class Oystercard
   end
 
   def touch_in(station)
+    raise "Error, balance is below £#{MINIMUM}" if @balance < MINIMUM
     @entry_station = station
   end
 
   def touch_out
     @entry_station = false
   end
+
+
 end

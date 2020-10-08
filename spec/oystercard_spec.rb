@@ -36,11 +36,13 @@ describe Oystercard do
 
   describe '#entry_station' do
     it 'returns entry station if touched in' do
+      subject.top_up(4)
       subject.touch_in(:station)
       expect(subject.entry_station).to eq :station
     end
 
     it 'returns false if touched out' do
+      subject.top_up(4)
       subject.touch_in(:station)
       subject.touch_out
       expect(subject.entry_station).to eq false
@@ -49,8 +51,10 @@ describe Oystercard do
 
   describe '#touch_in' do
     it 'lets customer enter' do
+      subject.top_up(4)
       expect{ subject.touch_in(:station) }.to change { subject.in_journey? }.to(true)
     end
+
     it 'raises error if balance is less than 1' do
       expect{subject.touch_in(:station)}.to raise_error "Error, balance is below £#{Oystercard::MINIMUM}"
     end
@@ -58,6 +62,7 @@ describe Oystercard do
 
   describe '#touch_out' do
     it 'lets customer exit' do
+      subject.top_up(3)
       subject.touch_in(:station)
       expect{ subject.touch_out }.to change { subject.in_journey? }.to(false)
     end
