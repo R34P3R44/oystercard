@@ -45,7 +45,7 @@ describe Oystercard do
     it 'returns false if touched out' do
       subject.top_up(4)
       subject.touch_in(:station)
-      subject.touch_out
+      subject.touch_out("exit_station")
       expect(subject.entry_station).to eq nil
     end
   end
@@ -59,19 +59,27 @@ describe Oystercard do
     it 'raises error if balance is less than 1' do
       expect{subject.touch_in(:station)}.to raise_error "Error, balance is below £#{Oystercard::MINIMUM}"
     end
+
+    it 'checks if #travel_history array is empty' do
+      expect(subject.travel_history.empty?).to eq true
+    end
   end
 
   describe '#touch_out' do
     it 'lets customer exit' do
       subject.top_up(3)
       subject.touch_in(:station)
-      expect{ subject.touch_out }.to change { subject.in_journey? }.to(false)
+      expect{ subject.touch_out("exit_station") }.to change { subject.in_journey? }.to(false)
     end
 
     it 'deducts the correct fare' do
       subject.top_up(4)
       subject.touch_in(:station)
-      expect{ subject.touch_out }.to change { subject.balance }.by(-Oystercard::MINIMUM)
+      expect{ subject.touch_out("exit_station") }.to change { subject.balance }.by(-Oystercard::MINIMUM)
+    end
+
+    it 'checks touch_out responds to 1 argument' do
+      expect(subject).to respond_to(:touch_out).with(1).argument
     end
   end
 end
