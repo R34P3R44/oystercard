@@ -66,6 +66,9 @@ describe Oystercard do
   end
 
   describe '#touch_out' do
+  let(:entry_station) {double :station}
+  let(:exit_station) {double :station}
+
     it 'lets customer exit' do
       subject.top_up(3)
       subject.touch_in(:station)
@@ -81,5 +84,34 @@ describe Oystercard do
     it 'checks touch_out responds to 1 argument' do
       expect(subject).to respond_to(:touch_out).with(1).argument
     end
+
+    it 'test exit station output' do
+      subject.touch_out(exit_station)
+      expect(subject.exit_station).to eq(exit_station)
+    end
+
+  describe '#travel_history' do
+    let(:entry_station) {double :station}
+    let(:exit_station) {double :station}
+    context 'testing one journey' do
+        it 'tests journey added to #travel_history' do
+        subject.top_up(Oystercard::MINIMUM)
+        subject.touch_in(entry_station)
+        subject.touch_out(exit_station)
+        expect(subject.travel_history).to eq([{:entry_station=>entry_station, :exit_station=>exit_station}])
+      end
+    end
+
+    context 'testing two journeys' do
+      it 'tests two journeys added to #travel_history' do
+        subject.top_up(5)
+        subject.touch_in(entry_station)
+        subject.touch_out(exit_station)
+        subject.touch_in(entry_station)
+        subject.touch_out(exit_station)
+        expect(subject.travel_history).to eq([{:entry_station=>entry_station, :exit_station=>exit_station},{:entry_station=>entry_station, :exit_station=>exit_station}])
+      end
   end
+end
+end
 end
