@@ -1,5 +1,3 @@
-# can hold credit to allow users to pay for public transport use
-
 class Oystercard
 
   attr_reader :balance, :entry_station, :travel_history, :exit_station
